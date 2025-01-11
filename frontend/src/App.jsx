@@ -2,13 +2,73 @@ import { Link, Outlet } from "react-router-dom";
 import { Footer, Navbar } from "./components";
 import { User } from "./pages";
 import { Button } from "@mui/material";
+import { useEffect } from "react";
+import './App.css'
 function App() {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scrolls to the top of the page
+  }, []);
+  
   return (
     <div className="">
       <div className="relative h-[80vh] w-screen overflow-hidden flex flex-col">
-        <div className="text-white z-20 absolute top-[47%] right-[30%] font-serif text-8xl ">
-          MOVE SMART
+        <div className="text-slate-200 gap-10 z-20 h-[100vh] w-full flex flex-col mt-64 items-center ">
+
+          <h1 className="font-serif text-8xl">MOVE SMART</h1>
+          <div className="flex w-[80vw] justify-evenly">
+            <Link to={"/user"}>
+              <Button
+                sx={{
+                  borderRadius: "10px",
+                  width: "300px",
+                  height: "120px",
+                  fontSize: "25px",
+                  fontWeight: "semi-bold",
+                  transition: "transform 0.3s ease, background-color 0.3s ease", // Add transition for smooth effect
+                }}
+                variant="contained"
+                className="button-hover"
+              >
+                User
+              </Button>
+            </Link>
+            <Link to={"/driverlogin"}>
+              <Button
+                sx={{
+                  borderRadius: "10px",
+                  width: "300px",
+                  height: "120px",
+                  fontSize: "25px",
+                  background: "#aa2727",
+                  fontWeight: "semi-bold",
+                  transition: "transform 0.3s ease, background-color 0.3s ease", // Add transition for smooth effect
+                }}
+                variant="contained"
+                className="button-hover"
+              >
+                Driver
+              </Button>
+            </Link>
+            <Link to={"/"}>
+              <Button
+                sx={{
+                  borderRadius: "10px",
+                  width: "300px",
+                  height: "120px",
+                  fontSize: "25px",
+                  background: "green",
+                  fontWeight: "semi-bold",
+                  transition: "transform 0.3s ease, background-color 0.3s ease", // Add transition for smooth effect
+                }}
+                variant="contained"
+                className="button-hover"
+              >
+                Admin
+              </Button>
+            </Link>
+          </div>
         </div>
+
         <video
           src="/background.mp4"
           autoPlay
@@ -23,55 +83,6 @@ function App() {
         <img width={100} height={100} src="/logo2.png" alt="" />
         <img width={100} height={100} src="/logo3.png" alt="" />
         <img width={100} height={100} src="/logo.png" alt="" />
-      </div>
-      <div className="w-full h-[2px] bg-slate-300 mt-20"></div>
-      <div className="w-full h-[90vh] flex justify-center items-center flex-col gap-16">
-        <div className="mt-20 text-center">
-          <h1 className="text-9xl font-serif ">You are a ...</h1>
-        </div>
-        <div className="flex gap-4 mx-20 mb-20 ">
-          <Link to={"/user"}>
-            <Button
-              sx={{
-                width: "400px",
-                height: "170px",
-                fontSize: "30px",
-                fontWeight: "bold",
-              }}
-              variant="contained"
-            >
-              User
-            </Button>
-          </Link>
-          <Link to={"/driverlogin"}>
-            <Button
-              sx={{
-                width: "400px",
-                height: "170px",
-                fontSize: "30px",
-                background: "#aa2727",
-                fontWeight: "bold",
-              }}
-              variant="contained"
-            >
-              Driver
-            </Button>
-          </Link>
-          <Link to={"/"}>
-            <Button
-              sx={{
-                width: "400px",
-                height: "170px",
-                fontSize: "30px",
-                background: "green",
-                fontWeight: "bold",
-              }}
-              variant="contained"
-            >
-              Admin
-            </Button>
-          </Link>
-        </div>
       </div>
     </div>
   );

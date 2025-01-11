@@ -1,0 +1,8 @@
+/* Add these styles in your CSS file or inside <style> tags */
+.button-hover:hover {
+    transform: scale(1.1); /* Zooms in the button on hover */
+    background-color: transparent; /* Makes the background transparent */
+    color: inherit; /* Ensures text color remains unchanged */
+    border: 2px solid currentColor; /* Optional: Adds a border around the button */
+  }
+  

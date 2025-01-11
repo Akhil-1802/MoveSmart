@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8000
 const driverRoutes = require('./Routes/driver.routes')
 const app = express();
 const server = http.createServer(app);
+const userRoutes = require('./Routes/user.routes')
 const io = new Server(server, {
     cors: {
         origin: "*", // Allow all origins (use specific domains in production)
@@ -21,6 +22,7 @@ app.use(cors({
 }));
 app.use(express.json())
 app.use('/driver',driverRoutes)
+app.use('/user',userRoutes)
 // Dummy bus locations
 let buses = {
     bus1: { latitude: 28.7041, longitude: 77.1025 }, // Example coordinates (New Delhi)

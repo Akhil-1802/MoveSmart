@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Feedback from "./Feedback";
 
-export {Navbar,Footer}
+export {Navbar,Footer,Feedback}
