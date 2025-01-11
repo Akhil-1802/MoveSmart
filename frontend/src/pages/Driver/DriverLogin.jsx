@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 function DriverLogin() {
+    const Navigate = useNavigate()
   const [busno, setBusno] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!busno || !password) {
       alert("Please fill out both fields.");
       return;
     }
-    console.log("Bus Number:", busno);
-    console.log("Password:", password);
+    const response = await fetch (`http://localhost:3000/driver/login/${busno}/${password}`,{
+      method:"POST",
+      credentials:"include"
+    })
+    if(response.ok){
+        const data = await response.json()
+        console.log(data)
+        Navigate('/driver')
+    }
     // Add further login logic here
   };
   return (

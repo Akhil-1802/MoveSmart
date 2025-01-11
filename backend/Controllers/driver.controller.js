@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const DriverLoginModel = require('../models/Driver.model')
-
+const jwt = require('jsonwebtoken')
 
 const DriverLoginController = async function (req ,res) {
     try {
@@ -9,7 +9,22 @@ const DriverLoginController = async function (req ,res) {
             BusNumber
         })
         if(!Driver)
-            return res.status(400).json({error : ""})
+            return res.status(400).json({error : "BusNumber or Password is Incorrect"})
+
+        const ComparePassword = await bcrypt.compare(Password,Driver.Password)
+        if(!ComparePassword)
+            return res.status(400).json({error:"BusNumber or Password is Incorrect"})
+        
+        
+        // Generate JWT token
+        const token =jwt.sign({ DriverId: Driver._id }, process.env.JWT_SECRET, {
+            expiresIn: '24h', // Token expiration
+        });
+        // Set cookie with token
+        res.cookie('token', token, {
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+        res.status(200).json({message:"Success",Driver})
     } catch (error) {
         res.status(500).json({error:"Internal Server Error"})
         console.log(error)
@@ -38,5 +53,13 @@ const DriverRegisterController = async (req,res) =>{
         console.log(error)
     }
 }
-
-module.exports ={DriverLoginController,DriverRegisterController}
+const DriverLogoutController = async (req,res) => {
+    try {
+        res.clearCookie('token')
+        res.status(200).json({message : "Logout Successful"})
+    } catch (error) {
+        res.status(500).json({error:"Internal Server Error"})
+        console.log(error)
+    }
+}
+module.exports ={DriverLoginController,DriverRegisterController,DriverLogoutController}

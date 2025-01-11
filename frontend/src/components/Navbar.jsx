@@ -8,8 +8,8 @@ function Navbar() {
       Route: "Home",
     },
     {
-      path: "/",
-      Route: "About",
+      path: "/bustracking",
+      Route: "Bus Tracking",
     },
     {
       path: "/",

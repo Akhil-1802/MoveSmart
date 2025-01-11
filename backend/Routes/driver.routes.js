@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express()
-const {DriverLoginController,DriverRegisterController} = require('../Controllers/driver.controller')
-router.get( '/login/:BusNumber/:Password', DriverLoginController)
-router.post('/login', DriverRegisterController)
-
+const {DriverLoginController,DriverRegisterController,DriverLogoutController} = require('../Controllers/driver.controller')
+router.post( '/login/:BusNumber/:Password', DriverLoginController)
+router.post('/register', DriverRegisterController)
+router.get('/logout',DriverLogoutController)
 module.exports = router
