@@ -7,7 +7,7 @@ function Driver() {
   const setupSocketConnection = () => {
     const socket = io("http://localhost:3000");
 
-    socket.emit("updateLocation", {busId:"UP@#",latitude: 28.7041, longitude: 79.1165})
+    socket.emit("updateLocation", {busId:"UP@#",latitude: 28.7041, longitude: 77.965})
 
     socket.on("connect_error", (error) => {
       console.error("WebSocket connection error:", error);

@@ -6,10 +6,9 @@ const BusTracker = () => {
   const mapInstance = useRef(null);
   const markers = useRef({});
   const busPaths = useRef({});
-  const busIcons = useRef({});
   const userMarker = useRef(null);
   const isFirstUpdate = useRef(true);
-    console.log(markers)
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -40,7 +39,6 @@ const BusTracker = () => {
     const socket = io("http://localhost:3000");
 
     socket.on("locationUpdate", (data) => {
-        console.log(data)
       const { busId, latitude, longitude } = data;
       updateBusMarker(busId, latitude, longitude);
       updatePolyline(busId, latitude, longitude);
@@ -57,14 +55,11 @@ const BusTracker = () => {
     const location = new Microsoft.Maps.Location(latitude, longitude);
 
     if (!markers.current[busId]) {
-      const pushpin = new Microsoft.Maps.Pushpin(location, { visible: false });
+      const icon = createBusIcon();  // Create icon with fixed size
+      const pushpin = new Microsoft.Maps.Pushpin(location, { icon: icon });
+
       mapInstance.current.entities.push(pushpin);
       markers.current[busId] = pushpin;
-
-      const icon = createBusIcon();
-      busIcons.current[busId] = icon;
-      document.getElementById("map-container").appendChild(icon);
-      updateIconPosition(icon, location);
 
       if (isFirstUpdate.current) {
         mapInstance.current.setView({ center: location, zoom: 15 });
@@ -74,6 +69,52 @@ const BusTracker = () => {
       smoothlyUpdateMarker(busId, latitude, longitude);
     }
   };
+
+  const createBusIcon = () => {
+    const img = document.createElement("img");
+    img.src =
+      "https://cdn.iconscout.com/icon/free/png-512/free-bus-icon-download-in-svg-png-gif-file-formats--back-city-basic-icons-pack-industry-449853.png?f=webp&w=256";
+    img.alt = "Bus Icon";
+    img.style.width = "32px"; // set the width of the bus icon (fixed size)
+    img.style.height = "32px"; // set the height of the bus icon (fixed size)
+    img.style.pointerEvents = "none"; // Disable interaction (click, hover)
+    return img;
+  };
+
+  const smoothlyUpdateMarker = (busId, newLat, newLng, duration = 500) => {
+    const Microsoft = window.Microsoft;
+    const pushpin = markers.current[busId];
+    if (!pushpin) return;
+
+    const startTime = Date.now();
+    const startLat = pushpin.getLocation().latitude;
+    const startLng = pushpin.getLocation().longitude;
+
+    function animate() {
+      const currentTime = Date.now();
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      const easeProgress =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      const currentLat = lerp(startLat, newLat, easeProgress);
+      const currentLng = lerp(startLng, newLng, easeProgress);
+
+      const location = new Microsoft.Maps.Location(currentLat, currentLng);
+      pushpin.setLocation(location);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    animate();
+  };
+
+  const lerp = (start, end, t) => start + (end - start) * t;
 
   const updatePolyline = (busId, latitude, longitude) => {
     const Microsoft = window.Microsoft;
@@ -122,60 +163,6 @@ const BusTracker = () => {
       console.error("Geolocation is not supported by your browser.");
     }
   };
-
-  const createBusIcon = () => {
-    const div = document.createElement("div");
-    div.className = "bus-icon";
-    div.innerHTML =
-      '<img src="https://cdn.iconscout.com/icon/free/png-512/free-bus-icon-download-in-svg-png-gif-file-formats--back-city-basic-icons-pack-industry-449853.png?f=webp&w=256" alt="Bus Icon" />';
-    return div;
-  };
-
-  const updateIconPosition = (icon, location) => {
-    const Microsoft = window.Microsoft;
-    const point = mapInstance.current.tryLocationToPixel(location, Microsoft.Maps.PixelReference.control);
-    if (point) {
-      icon.style.left = `${point.x}px`;
-      icon.style.top = `${point.y}px`;
-    }
-  };
-
-  const smoothlyUpdateMarker = (busId, newLat, newLng, duration = 500) => {
-    const Microsoft = window.Microsoft;
-    const icon = busIcons.current[busId];
-    if (!icon) return;
-
-    const startTime = Date.now();
-    const startLat = markers.current[busId].getLocation().latitude;
-    const startLng = markers.current[busId].getLocation().longitude;
-
-    function animate() {
-      const currentTime = Date.now();
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      const easeProgress =
-        progress < 0.5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-      const currentLat = lerp(startLat, newLat, easeProgress);
-      const currentLng = lerp(startLng, newLng, easeProgress);
-
-      const location = new Microsoft.Maps.Location(currentLat, currentLng);
-      markers.current[busId].setLocation(location);
-
-      updateIconPosition(icon, location);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    }
-
-    animate();
-  };
-
-  const lerp = (start, end, t) => start + (end - start) * t;
 
   return <div id="map-container" style={{ width: "100%", height: "100vh" }} ref={mapRef}></div>;
 };
