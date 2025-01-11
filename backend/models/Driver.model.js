@@ -18,7 +18,7 @@ const DriverLogin = new mongoose.Schema({
         type : String ,
         required :true
     },
-    Password : {
+    DriverID : {
         type : String ,
         required :true
     },

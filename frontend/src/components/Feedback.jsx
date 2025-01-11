@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 function Feedback({setfeedback}) {
   const [rideExperience, setRideExperience] = useState("");
@@ -22,6 +23,10 @@ function Feedback({setfeedback}) {
     
           })
         if(response.ok){
+            toast.success("Feedback Submitted",{
+                position: "top-center",
+            autoClose: 2000
+            })
             setfeedback(false)
         }
   }

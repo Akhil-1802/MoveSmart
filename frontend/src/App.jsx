@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="">
       <div className="relative h-[80vh] w-screen overflow-hidden flex flex-col">
-        <div className="text-slate-200 gap-10 z-20 h-[100vh] w-full flex flex-col mt-64 items-center ">
+        <div className="text-slate-200 gap-10 z-20 h-[100vh] w-full flex flex-col justify-center items-center ">
 
           <h1 className="font-serif text-8xl">MOVE SMART</h1>
           <div className="flex w-[80vw] justify-evenly">

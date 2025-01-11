@@ -1,19 +1,18 @@
-const bcrypt = require('bcrypt')
+
 const DriverLoginModel = require('../models/Driver.model')
 const jwt = require('jsonwebtoken')
 
 const DriverLoginController = async function (req ,res) {
     try {
-        const {BusNumber , Password} = req.params
+        const {BusNumber , DriverID} = req.params
         const Driver = await DriverLoginModel.findOne({
             BusNumber
         })
         if(!Driver)
-            return res.status(400).json({error : "BusNumber or Password is Incorrect"})
+            return res.status(400).json({error : "BusNumber or DriverID is Incorrect"})
 
-        const ComparePassword = await bcrypt.compare(Password,Driver.Password)
-        if(!ComparePassword)
-            return res.status(400).json({error:"BusNumber or Password is Incorrect"})
+        if(Driver.DriverID !== DriverID)
+            return res.status(400).json({error:"BusNumber or DriverID is Incorrect"})
         
         
         // Generate JWT token
@@ -32,15 +31,15 @@ const DriverLoginController = async function (req ,res) {
 }
 const DriverRegisterController = async (req,res) =>{
     try {
-        const {Name , BusNumber , Start ,Destination , Password , PhoneNumber} = req.body;
-        const hashedPassword = await bcrypt.hash(Password , 10);
+        const {Name , BusNumber , Start ,Destination , DriverID , PhoneNumber} = req.body;
+        
         const Driver = await DriverLoginModel.create({
             Name,
             BusNumber,
             Start,
             Destination,
             PhoneNumber,
-            Password : hashedPassword
+           DriverID
         })
         if(!Driver){
             return res.status(400).json({error:"Not able to register"})

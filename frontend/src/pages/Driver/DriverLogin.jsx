@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 function DriverLogin() {
     const Navigate = useNavigate()
   const [busno, setBusno] = useState("");
-  const [password, setPassword] = useState("");
+  const [driverID, setDriverID] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!busno || !password) {
+    if (!busno || !driverID) {
       alert("Please fill out both fields.");
       return;
     }
-    const response = await fetch (`http://localhost:3000/driver/login/${busno}/${password}`,{
+    const response = await fetch (`http://localhost:3000/driver/login/${busno}/${driverID}`,{
       method:"POST",
       credentials:"include"
     })
     if(response.ok){
         const data = await response.json()
-        console.log(data)
         Navigate('/driver')
+        toast.success('Login Successful',{
+          position : 'top-center',
+          autoClose:2000
+        })
     }
     // Add further login logic here
   };
@@ -27,13 +31,13 @@ function DriverLogin() {
       <div className="min-h-screen w-[60%] ">
         <img
           className="cover h-[98%] mt-2 w-[98%] ml-2 rounded-lg"
-          src="https://imgs.search.brave.com/-xegy4nQi5b7bNvmct4g_fkDI52SRVnu7rPQtf6Sw7M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTMx/NjQ4MDgxMC9waG90/by9jYXJzLXRyYXZl/bGluZy10cm91Z2gt/Y2l0eS1pbi10aGUt/ZXZlbmluZy5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9WHpa/QTFOX1NZaEZITWsy/a3pUVEhIRUhucnJ0/b2x1bXpNRDA1YzYx/bVNFST0"
+          src="/driverlogin.webp"
           alt=""
         />
       </div>
       <div className="my-auto  h-96 w-[40%] mx-auto">
         <h1 className="text-center font-bold text-3xl font-sans">
-          Welcome To Move Online
+          Welcome To Move Smart
         </h1>
         <p className="text-center my-4">Login Before start driving</p>
         <form onSubmit={handleSubmit} className="flex w-[60%] mx-auto flex-col gap-4 my-10" action="">
@@ -46,11 +50,11 @@ function DriverLogin() {
             variant="outlined"
           />
           <TextField
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
+            value={driverID}
+            onChange={(e) => setDriverID(e.target.value)}
+            type="text"
             id="outlined-basic"
-            label="Password"
+            label="Driver ID"
             variant="outlined"
           />
           <Button

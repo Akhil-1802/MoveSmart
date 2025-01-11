@@ -7,6 +7,7 @@ import { Driver, DriverLogin, User } from "./pages/index.js";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import BusTracking from "./pages/BusTracking/BusTracking.jsx";
+import {ToastContainer} from 'react-toastify'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <ToastContainer />
     <RouterProvider router={router} />
   </StrictMode>
 );
