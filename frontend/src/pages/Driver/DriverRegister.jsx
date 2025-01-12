@@ -15,7 +15,7 @@ function DriverRegister() {
   const [PhoneNumber , setPhoneNumber] = useState('')
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!Name || !BusName || !BusNumber || !PhoneNumber || !from || !to || !departure || !arrival || !seat) {
+    if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || departure=="" || arrival=="" || seat=="") {
       alert("Please fill out both fields.");
       return;
     }

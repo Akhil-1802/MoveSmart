@@ -6,6 +6,7 @@ const dbconnect = require("./connections/db.connect");
 const userRoutes = require('./Routes/user.routes');
 const driverRoutes = require('./Routes/driver.routes');
 const busRoutes = require('./Routes/email.routes');
+const adminRoutes = require('./Routes/admin.routes')
 const http = require("http");
 const { Server } = require("socket.io");
 
@@ -24,6 +25,7 @@ app.use(cors({
 // Load routes
 app.use('/user', userRoutes);
 app.use('/driver', driverRoutes);
+app.use('/admin', adminRoutes);
 app.use('/sendConfirmationEmail', busRoutes);
 
 const io = new Server(server, {
