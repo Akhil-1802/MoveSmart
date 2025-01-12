@@ -12,8 +12,8 @@ function Navbar({feedback , setFeedback, sos , setsos}) {
       Route: "Bus Tracking",
     },
     {
-      path: "/",
-      Route: "Contact Us",
+      path: "/bookticket",
+      Route: "Book Ticket",
     },
     {
       path: "/",

@@ -5,10 +5,11 @@ const userRoutes = require('./Routes/user.routes')
 const driverRoutes = require('./Routes/driver.routes')
 const cors = require("cors");
 const dbconnect = require("./connections/db.connect");
-
+const adminRoutes = require('./Routes/admin.routes')
 const http = require("http");
 const { Server } = require("socket.io");
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 dotenv.config(); // Load environment variables
 
@@ -49,7 +50,7 @@ io.on("connection", (socket) => {
 // Load routes
 app.use('/user',userRoutes);
 app.use('/driver',driverRoutes);
-app.use(express.urlencoded({ extended: true }));
+app.use('/admin',adminRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000; // Use environment variable for the port

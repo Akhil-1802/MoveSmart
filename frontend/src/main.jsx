@@ -1,26 +1,41 @@
-import { StrictMode } from "react";
+import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { BusTrackingMap, Driver, DriverLogin, User, UserLogin, UserRegister } from "./pages/index.js";
+import {
+  Admin,
+  AdminLogin,
+  BookTicket,
+  BusTrackingMap,
+  Driver,
+  DriverLogin,
+  User,
+  UserLogin,
+  UserRegister,
+} from "./pages/index.js";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import {ToastContainer} from 'react-toastify'
+import { ToastContainer } from "react-toastify";
+import { Userprovider } from "../context/userContext.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
   },
   {
-    path:'/user',
-    element : <><User /></>
+    path: "/user",
+    element: (
+      <>
+        <User />
+      </>
+    ),
   },
   {
     path: "/userlogin",
     element: (
       <>
-        <UserLogin/>
+        <UserLogin />
       </>
     ),
   },
@@ -28,7 +43,7 @@ const router = createBrowserRouter([
     path: "/userregister",
     element: (
       <>
-        <UserRegister/>
+        <UserRegister />
       </>
     ),
   },
@@ -38,16 +53,31 @@ const router = createBrowserRouter([
   },
   {
     path: "/driver",
-    element: <Driver/>,
+    element: <Driver />,
   },
   {
-    path : '/bustracking',
-    element : <BusTrackingMap/>
+    path: "/bustracking",
+    element: <BusTrackingMap />,
+  },
+  {
+    path:'/bookticket',
+    element : <BookTicket/>
+  },
+  {
+    path:"/adminlogin",
+    element:<AdminLogin/>
+  },
+  {
+    path:"/admin",
+    element:<Admin/>
   }
 ]);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ToastContainer />
-    <RouterProvider router={router} />
+      <ToastContainer />
+      <Userprovider>
+      <RouterProvider router={router} />
+      </Userprovider>
   </StrictMode>
 );

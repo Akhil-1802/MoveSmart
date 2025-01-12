@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const FeedbackModel = require("../models/feedback.model");
 const UserModel = require("../models/User.model");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const SOSmodel = require("../models/SOS.model");
 const FeedbackController = async (req, res) => {
   try {
     const { BusNumber, Experience, DriverBehaviour, Helpful, Suggestions } =
@@ -78,9 +79,27 @@ const UserRegisterController = async function (req, res) {
     console.log(error);
   }
 };
+const SOSController = async (req , res) =>{
+  try {
+    const { Name , Email , BusNumber , Issue} = req.body
+    const SOS = await SOSmodel.create({
+      Name,
+      BusNumber,
+      Email,
+      Issue
+    })
+    if(!SOS)
+      return res.status(400).json({error : "SOS not created"})
+    res.status(200).json({message : "SOS submitted",SOS})
 
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error);
+  }
+}
 module.exports = {
   FeedbackController,
   UserRegisterController,
   UserLoginController,
+  SOSController
 };

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
+import { userProfile } from "../../../context/userContext.jsx";
 
 const UserLogin = () => {
+    const {email,setEmail} = useContext(userProfile)
   const [form, setform] = useState({ Email: "", password: "" });
   const Navigate = useNavigate();
   const handlechange = (e) => {
@@ -19,6 +21,7 @@ const UserLogin = () => {
       credentials: "include",
     });
     if (response.ok) {
+        setEmail(form.Email)
         console.log(response)
         Navigate('/user')
         toast.success('Login Done',{
