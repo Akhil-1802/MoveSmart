@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { BusTrackingMap, Driver, DriverLogin, User, UserLogin } from "./pages/index.js";
+import { BusTrackingMap, Driver, DriverLogin, User, UserLogin, UserRegister } from "./pages/index.js";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import {ToastContainer} from 'react-toastify'
@@ -13,10 +13,22 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/user",
+    path:'/user',
+    element : <><User /></>
+  },
+  {
+    path: "/userlogin",
     element: (
       <>
         <UserLogin/>
+      </>
+    ),
+  },
+  {
+    path: "/userregister",
+    element: (
+      <>
+        <UserRegister/>
       </>
     ),
   },

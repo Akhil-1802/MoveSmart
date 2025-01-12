@@ -16,11 +16,11 @@ const DriverLoginController = async function (req ,res) {
         
         
         // Generate JWT token
-        const token =jwt.sign({ DriverId: Driver._id }, process.env.JWT_SECRET, {
+        const Drivertoken =jwt.sign({ DriverId: Driver._id }, process.env.JWT_SECRET, {
             expiresIn: '24h', // Token expiration
         });
         // Set cookie with token
-        res.cookie('token', token, {
+        res.cookie('Drivertoken', Drivertoken, {
             maxAge: 24 * 60 * 60 * 1000,
         });
         res.status(200).json({message:"Success",Driver})

@@ -25,7 +25,10 @@ const io = new Server(server, {
 });
 
 // Use CORS middleware for all routes
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:5173',
+    credentials:true
+}));
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);

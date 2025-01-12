@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { Feedback, Footer, Navbar } from "../../components";
+import { Feedback, Footer, Navbar, SOS } from "../../components";
 function User() {
   const [feedback, setFeedback] = useState(false);
+  const [sos , setsos]= useState(false)
   useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top of the page
   }, []);
-  const handleoverclick = (e) => {
+  const handlefeedback = (e) => {
     if (e.target === e.currentTarget) {
       setFeedback(false);
     }
   };
+  const handleSOS = (e) => {
+    if (e.target === e.currentTarget) {
+      setsos(false);
+    }
+  };
   return (
     <div className="min-h-screen">
+      {sos && (
+        <div
+          onClick={handleSOS}
+          className=" inset-0 fixed backdrop-blur-sm z-20 flex items-center justify-center"
+        >
+          <SOS setsos={setsos} />
+        </div>
+      )}
       {feedback && (
         <div
-          onClick={handleoverclick}
+          onClick={handlefeedback}
           className=" inset-0 fixed backdrop-blur-sm z-20 flex items-center justify-center"
         >
           <Feedback setfeedback={setFeedback} />
         </div>
       )}
-      <Navbar feedback={feedback} setFeedback={setFeedback} />
+      <Navbar feedback={feedback} setFeedback={setFeedback} sos={sos} setsos={setsos} />
       <div className="w-[80%] max-w-7xl flex items-center h-96  mx-auto my-16  justify-evenly">
         <div className="">
           <h1 className="font-bold flex flex-col gap-3">

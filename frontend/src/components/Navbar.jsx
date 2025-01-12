@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
-function Navbar({feedback , setFeedback}) {
+function Navbar({feedback , setFeedback, sos , setsos}) {
   const Routes = [
     {
       path: "/",
@@ -37,7 +37,7 @@ function Navbar({feedback , setFeedback}) {
         </div>
         <div className="flex gap-6  items-center max-md:hidden">
           <NavLink >
-            <Button variant="contained">SOS</Button>
+            <Button onClick={() => (setsos( sos => !sos))} variant="contained">SOS</Button>
           </NavLink>
           <NavLink>
             <Button onClick={() => (setFeedback( feedback => !feedback))} variant="outlined">Feedback</Button>

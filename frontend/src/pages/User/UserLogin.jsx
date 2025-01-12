@@ -12,22 +12,26 @@ const UserLogin = () => {
   const handlechange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
-  const userlogin = async () => {
-    const response = await fetch("http://localhost:3000/user/login", {
+  const userlogin = async (e) => {
+    e.preventDefault()
+    const response = await fetch(`http://localhost:3000/user/login/${form.Email}/${form.password}`, {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form }),
     });
     if (response.ok) {
-      return;
+        console.log(response)
+        Navigate('/user')
+        toast.success('Login Done',{
+            autoClose:2000,
+            position:'top-center'
+        })  
     }
   };
 
   return (
     <div style={{ backgroundColor: "#0a0e27" }} className="min-h-screen flex">
       <div className="w-1/2 m-auto h-96 backdrop-blur-lg bg-white flex text-white">
-        <div className="w-1/2 text-black">
+        <form onSubmit={userlogin} className="w-1/2 text-black">
           <div className="h-32 text-center flex items-center justify-center">
             <h2 className="text-3xl underline font-bold">Login</h2>
           </div>
@@ -59,15 +63,15 @@ const UserLogin = () => {
               name="password"
             />
           </div>
-          <div className="text-center mt-3">
-            <Button sx={{
+          <div className="text-center mt-8">
+            <Button type="submit" sx={{
                 background : '#0a0e64',
-                width:'50px',
+                width:'100px',
                 height:"40px"
             }} variant="contained">Login</Button>
           </div>
           
-        </div>
+        </form>
         <div
           className="w-1/2 flex justify-center items-center"
           style={{ backgroundColor: "#0a0e32" }}
@@ -77,7 +81,7 @@ const UserLogin = () => {
             <div className="flex flex-col justify-center items-center gap-2">
               <span>Dont't have an account?</span>
               <span className="text-center">
-                <Link to={"/register"}>
+                <Link to={"/userregister"}>
                   <button
                     type="button"
                     className="text-white bg-transparent border-2  font-medium rounded-full hover:bg-white hover:text-black text-sm px-5 py-2.5 text-center me-2 mb-2"

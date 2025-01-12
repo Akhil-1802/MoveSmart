@@ -16,7 +16,7 @@ function App() {
 
           <h1 className="font-serif text-8xl">MOVE SMART</h1>
           <div className="flex w-[80vw] justify-evenly">
-            <Link to={"/user"}>
+            <Link to={"/userlogin"}>
               <Button
                 sx={{
                   borderRadius: "10px",
