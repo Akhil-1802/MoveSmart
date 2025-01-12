@@ -10,21 +10,29 @@ const DriverLogin = new mongoose.Schema({
         type : String ,
         required : true
     },
-    Start : {
+    BusName : {
+        type : String ,
+        required : true
+    },
+    from : {
         type : String ,
         required :true
     },
-    Destination : {
+    to : {
         type : String ,
         required :true
     },
-    DriverID : {
+    departure : {
         type : String ,
         required :true
     },
-    PhoneNumber : {
-        type : String ,
+    seat : {
+        type : Number ,
         required :true
+    },
+    DriverID:{
+        type:String,
+        required : true
     }
 },{timestamps :true})
 

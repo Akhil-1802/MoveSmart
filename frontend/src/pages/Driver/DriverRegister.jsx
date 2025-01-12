@@ -15,21 +15,21 @@ function DriverRegister() {
   const [PhoneNumber , setPhoneNumber] = useState('')
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!busno || !driverID) {
+    if (!Name || !BusName || !BusNumber || !PhoneNumber || !from || !to || !departure || !arrival || !seat) {
       alert("Please fill out both fields.");
       return;
     }
-    const response = await fetch(
-      `http://localhost:3000/driver/login/${busno}/${driverID}`,
-      {
-        method: "POST",
+    const response = await fetch('http://localhost:3000/driver/register',{
+        method: 'POST',
         credentials: "include",
-      }
-    );
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat})
+
+      })
     if (response.ok) {
-      const data = await response.json();
+        console.log(response)
       Navigate("/driver");
-      toast.success("Login Successful", {
+      toast.success("Driver Registered", {
         position: "top-center",
         autoClose: 2000,
       });
@@ -38,7 +38,7 @@ function DriverRegister() {
   };
   return (
     <div className="flex bg-slate-100">
-      <div className="my-auto min-h-screen w-[40%] mx-auto mt-12">
+      <div className="my-auto min-h-screen w-[40%] mx-auto mt-8">
         <h1 className="text-center font-bold text-3xl font-sans">
           Register Your Bus
         </h1>
@@ -147,10 +147,10 @@ function DriverRegister() {
             sx={{ paddingTop: "10px", marginTop: "20px" }}
             variant="contained"
           >
-            Login
+            Register
           </Button>
           <div className="flex items-center justify-start">
-            <p className="text-center my-4">Already Registered?</p>
+            <p className="text-center">Already Registered?</p>
             <Link
               className="text-sm text-blue-500 underline"
               to={"/driverlogin"}

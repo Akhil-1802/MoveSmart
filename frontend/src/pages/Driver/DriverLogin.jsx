@@ -19,7 +19,7 @@ function DriverLogin() {
     if(response.ok){
         const data = await response.json()
         Navigate('/driver')
-        toast.success('Login Successful',{
+        toast.success(' Driver Login ',{
           position : 'top-center',
           autoClose:2000
         })
