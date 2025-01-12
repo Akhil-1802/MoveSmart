@@ -123,7 +123,7 @@ const UserRegister = () => {
                 }}
                 variant="contained"
               >
-                Login
+                Register
               </Button>
             </div>
           </form>

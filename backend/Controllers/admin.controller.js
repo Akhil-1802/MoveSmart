@@ -1,63 +1,90 @@
-const {admindetails} = require('../admindetails/admindetails')
-const SOSmodel = require('../models/SOS.model')
+const AdminModel = require("../models/Admin.model");
+const SOSmodel = require("../models/SOS.model");
 
-const AdminLoginController = async(req,res) =>{
-    try {
-        const {adminName , adminId} = req.params
-        const Admin = admindetails.filter((item)=>(item.adminName === adminName))
-        if(!Admin)
-            return res.status(400).json({error:"Admin Id or Name is incorrect"})
-        if(!(Admin[0].adminId === adminId)){
-            return res.status(400).json({error:"Admin Id or Name is incorrect"})
-        }
-        res.status(200).json({message:"Admin login",Admin})
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({error:"Internal server error"})
-    }
-}
-const GetIssueController = async(req,res) => {
-    try {
-        const Issues = await SOSmodel.find({})
-        if(!Issues) return res.status(400).json({error:"Issues not find or no issues"})
+const AdminRegisterController = async (req, res) => {
+  try {
+    const { Name, Password, Email } = req.body;
+    const findAdmin = await AdminModel.findOne({
+      Email: Email,
+    });
+    if (findAdmin) return res.status(400).json({ error: "Admin Already exists" });
+    const Admin = await AdminModel.create({
+      Name,
+      Password,
+      Email
+    });
+    res.status(200).json({message : "Admin created", Admin})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+const AdminLoginController = async (req, res) => {
+  try {
+    const { Email, Password } = req.params;
+    const Admin = await AdminModel.findOne({
+        Email:Email
+    });
+    if (!Admin)
+      return res.status(400).json({ error: "Admin or Password is incorrect" });
+    
+    if(Admin.Password === Password)
+        return res.status(200).json({ message: "Admin login", Admin });
+    else
+        return res.status(400).json({error : "Admin or Password is incorrect"})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+const GetIssueController = async (req, res) => {
+  try {
+    const Issues = await SOSmodel.find({});
+    if (!Issues)
+      return res.status(400).json({ error: "Issues not find or no issues" });
 
-        res.status(200).json({message : "Issues found",Issues})
-    } catch (error) {
-        
-        console.log(error)
-        res.status(500).json({error:"Internal server error"})
-    }
-}
+    res.status(200).json({ message: "Issues found", Issues });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
-const CompleteIssueController = async (req,res) => {
-    try {
-        const {id} = req.params
-        const Issue = await SOSmodel.updateOne({
-            _id : id
-        }
-    ,{
-        Completed : true
-    })
+const CompleteIssueController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Issue = await SOSmodel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        Completed: true,
+      }
+    );
 
-        res.status(200).json({message :"Updated Successfully"})
-    } catch (error) {
-        
-        console.log(error)
-        res.status(500).json({error:"Internal server error"})
-    }
-}
-const DeleteIssueController = async (req,res) => {
-    try {
-        const {id} = req.params
-        const Issue = await SOSmodel.deleteOne({
-            _id : id
-        })
+    res.status(200).json({ message: "Updated Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+const DeleteIssueController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Issue = await SOSmodel.deleteOne({
+      _id: id,
+    });
 
-        res.status(200).json({message :"Deleted Successfully"})
-    } catch (error) {
-        
-        console.log(error)
-        res.status(500).json({error:"Internal server error"})
-    }
-}
-module.exports={AdminLoginController , GetIssueController ,CompleteIssueController,DeleteIssueController}
+    res.status(200).json({ message: "Deleted Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+module.exports = {
+  AdminLoginController,
+  GetIssueController,
+  CompleteIssueController,
+  DeleteIssueController,
+  AdminRegisterController,
+};

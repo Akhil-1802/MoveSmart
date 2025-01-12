@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 
 const AdminLogin = () => {
     const Navigate = useNavigate()
-  const [adminName, setAdminName] = useState('');
-  const [adminId, setAdminId] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
 
   const handleSubmit = async (e)=>{
       e.preventDefault();
-    if(adminName == '' || adminId == ''){
+    if(Email == '' || Password == ''){
         toast.error('Fill all fields',{
             autoClose:2000,
             position:"top-center"
@@ -17,15 +17,23 @@ const AdminLogin = () => {
         return ;
     } 
     // Handle login logic here
-    const response = await fetch(`http://localhost:3000/admin/login/${adminName}/${adminId}`,{
-        method:"POST",
-        credentials:"include"
-    })
-    if(response.ok){
-        Navigate('/admin')
-        toast.success("Admin Login",{
+    try {
+        const response = await fetch(`http://localhost:3000/admin/login/${Email}/${Password}`,{
+            method:"POST",
+            credentials:"include"
+        })
+        if(response.ok){
+            Navigate('/admin')
+            toast.success("Admin Login",{
+                autoClose:2000,
+                position:"top-center"
+            })
+        }
+        
+    } catch (error) {
+        toast.error('Login failed , try again!',{
             autoClose:2000,
-            position:"top-center"
+            position:'top-center'
         })
     }
   };
@@ -38,26 +46,26 @@ const AdminLogin = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Admin Name Field */}
           <div>
-            <label htmlFor="adminName" className="block text-sm font-medium text-gray-700">Admin Name</label>
+            <label htmlFor="adminName" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="text"
               id="adminName"
-              value={adminName}
-              onChange={(e) => setAdminName(e.target.value)}
-              placeholder="Enter Admin Name"
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Admin Email"
               className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-xl shadow-md focus:ring-2 focus:ring-teal-500 focus:outline-none transition ease-in-out duration-200"
             />
           </div>
 
           {/* Admin ID Field */}
           <div>
-            <label htmlFor="adminId" className="block text-sm font-medium text-gray-700">Admin ID</label>
+            <label htmlFor="adminId" className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="text"
               id="adminId"
-              value={adminId}
-              onChange={(e) => setAdminId(e.target.value)}
-              placeholder="Enter Admin ID"
+              value={Password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter Password"
               className="w-full px-4 py-3 mt-2 border border-gray-300 rounded-xl shadow-md focus:ring-2 focus:ring-teal-500 focus:outline-none transition ease-in-out duration-200"
             />
           </div>
@@ -70,6 +78,17 @@ const AdminLogin = () => {
             Login
           </button>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Not registered?{' '}
+            <span
+              onClick={() => Navigate('/adminregister')}
+              className="text-teal-500 cursor-pointer hover:text-teal-600"
+            >
+              Register
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

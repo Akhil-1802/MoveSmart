@@ -38,7 +38,7 @@ const UserLogin = () => {
           <div className="h-32 text-center flex items-center justify-center">
             <h2 className="text-3xl underline font-bold">Login</h2>
           </div>
-          <div className="flex flex-col gap-5 ">
+          <div className="flex flex-col gap-4 ">
             <TextField
             sx={{
                 width : "80%",

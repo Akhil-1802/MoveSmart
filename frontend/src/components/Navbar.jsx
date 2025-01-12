@@ -8,8 +8,8 @@ function Navbar({feedback , setFeedback, sos , setsos}) {
       Route: "Home",
     },
     {
-      path: "/bustracking",
-      Route: "Bus Tracking",
+      path: "/",
+      Route: "Contact",
     },
     {
       path: "/bookticket",
@@ -28,9 +28,9 @@ function Navbar({feedback , setFeedback, sos , setsos}) {
             <img width={60} height={60} src="/logo.png" alt="" />
           </h1>
           <ul className=" flex gap-6 cursor-pointer max-md:hidden">
-            {Routes.map((Route) => (
-              <NavLink to={Route.path}>
-                <li key={Route.Route}>{Route.Route}</li>
+          {Routes.map((Route) => (
+              <NavLink className={`text-black no-underline`} to={Route.path}>
+                {Route.Route}
               </NavLink>
             ))}
           </ul>

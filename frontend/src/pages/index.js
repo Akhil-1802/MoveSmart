@@ -9,5 +9,7 @@ import AdminLogin from "./Admin/AdminLogin";
 import Admin from "./Admin/Dashboard";
 import DriverRegister from "./Driver/DriverRegister";
 import Issue from "./Admin/Issue";
+import AdminRegister from "./Admin/AdminRegister";
 
-export {User,Driver,DriverLogin,UserLogin, UserRegister ,BusTrackingMap,BookTicket,AdminLogin,Admin,DriverRegister,Issue}
+
+export {User,Driver,DriverLogin,UserLogin, UserRegister ,BusTrackingMap,BookTicket,AdminLogin,Admin,DriverRegister,Issue,AdminRegister}

@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
   Admin,
   AdminLogin,
+  AdminRegister,
   BookTicket,
   BusTrackingMap,
   Driver,
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path:"/adminlogin",
     element:<AdminLogin/>
+  },
+  {
+    path:"/adminregister",
+    element:<AdminRegister/>
   },
   {
     path:"/admin",

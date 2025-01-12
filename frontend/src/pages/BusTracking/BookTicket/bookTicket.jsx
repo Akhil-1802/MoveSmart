@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -41,6 +41,9 @@ const busData = [
 ];
 
 export default function BookTicket() {
+  useEffect(() => {
+      window.scrollTo(0, 0); // Scrolls to the top of the page
+    }, []);
   const [selectedBus, setSelectedBus] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',

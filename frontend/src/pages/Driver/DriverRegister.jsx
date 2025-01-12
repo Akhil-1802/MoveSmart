@@ -29,7 +29,7 @@ function DriverRegister() {
       })
     if (response.ok) {
         console.log(response)
-      Navigate("/driver");
+      Navigate("/driverlogin");
       toast.success("Driver Registered", {
         position: "top-center",
         autoClose: 2000,
@@ -158,15 +158,17 @@ function DriverRegister() {
           >
             Register
           </Button>
-          <div className="flex items-center justify-start ">
-            <p className="">Already Registered?</p>
-            <Link
-              className="text-sm text-blue-500 underline"
-              to={"/driverlogin"}
+          <div className="mt-1 text-center">
+          <p className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <span
+              onClick={() => navigate('/adminlogin')}
+              className="text-blue-500 cursor-pointer hover:text-teal-600"
             >
               Login
-            </Link>
-          </div>
+            </span>
+          </p>
+        </div>
         </form>
       </div>
       <div className="min-h-screen w-[60%] ">

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { Feedback, Footer, Navbar, SOS } from "../../components";
 import { Userprovider } from "../../../context/userContext.jsx";
+import { useNavigate } from "react-router-dom";
 function User() {
+  const Navigate = useNavigate()
   const [feedback, setFeedback] = useState(false);
   const [sos, setsos] = useState(false);
   useEffect(() => {
@@ -55,8 +57,10 @@ function User() {
             </p>
             <div className="mt-5 flex gap-6">
               <Button
+              onClick={()=>(Navigate('/bustracking'))}
                 sx={{
-                  borderRadius: "16px",
+                  borderRadius: "10px",
+                  height:'50px'
                 }}
                 variant="contained"
               >
@@ -83,20 +87,21 @@ function User() {
 
           <div className="">
             <h1 className="font-bold flex flex-col gap-3">
-              <span className="text-6xl ">Track Buses</span>
-              <span className="text-6xl flex-start">Near You...</span>
+              <span className="text-6xl ">Book Buses...</span>
             </h1>
-            <p className="text-center mt-4 text-xl">
-              See all the buses near your location..
+            <p className=" mt-4 text-xl">
+              Book buses before everyone..
             </p>
             <div className="mt-5 flex gap-6">
               <Button
+              onClick={()=>{Navigate('/bookticket')}}
                 sx={{
-                  borderRadius: "16px",
+                  borderRadius: "10px",
+                  height:'50px'
                 }}
                 variant="contained"
               >
-                Start Tracking
+                Book Your Bus
               </Button>
               <Button variant="outlined">Help</Button>
             </div>

@@ -55,7 +55,7 @@ function Feedback({setfeedback}) {
         </span>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col h-[90%] justify-evenly  ">
+      <form onSubmit={handleSubmit} className="flex flex-col h-[84%] justify-evenly  ">
       <TextField
           sx={{
             width: "90%",
