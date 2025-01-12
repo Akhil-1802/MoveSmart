@@ -1,63 +1,57 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const http = require('http')
-const {Server} = require('socket.io')
-dotenv.config()
-const cors = require('cors')
-const MongoDBConnection = require('./connections/db.connect')
-const PORT = process.env.PORT || 8000
-const driverRoutes = require('./Routes/driver.routes')
+const express = require("express");
 const app = express();
-const server = http.createServer(app);
+const dotenv = require("dotenv");
 const userRoutes = require('./Routes/user.routes')
+const driverRoutes = require('./Routes/driver.routes')
+const cors = require("cors");
+const dbconnect = require("./connections/db.connect");
+
+const http = require("http");
+const { Server } = require("socket.io");
+app.use(express.json());
+
+dotenv.config(); // Load environment variables
+
+// Create an HTTP server and attach Express
+const server = http.createServer(app);
+
+// Use dynamic CORS origin based on environment variables or allow all origins
+const allowedOrigin = process.env.ALLOWED_ORIGIN || "*"; // Default to '*' if not set
 const io = new Server(server, {
-    cors: {
-        origin: "*", // Allow all origins (use specific domains in production)
-        credentials:true
-    },
-});
-app.use(cors({
-    origin: "http://localhost:5173", // Adjust for your frontend URL
-    credentials: true, // To allow credentials like cookies, authentication headers
-}));
-app.use(express.json())
-app.use('/driver',driverRoutes)
-app.use('/user',userRoutes)
-// Dummy bus locations
-let buses = {
-    bus1: { latitude: 28.7041, longitude: 77.1025 }, // Example coordinates (New Delhi)
-    bus2: { latitude: 28.5355, longitude: 77.3910 }, // Example coordinates (Noida)
-};
-
-// API Route to fetch bus data (optional)
-app.get("/api/buses", (req, res) => {
-    res.json(buses);
+  cors: {
+    origin: allowedOrigin, // Allow connections from allowedOrigin
+    methods: ["GET", "POST"],
+  },
 });
 
-// Handle client connections
+// Use CORS middleware for all routes
+app.use(cors());
+
 io.on("connection", (socket) => {
-    console.log(`Client connected: ${socket.id}`);
+  console.log("Client connected:", socket.id);
 
-    // Send initial bus locations when a client connects
-    socket.emit("initialData", buses);
+  // Listen for location updates
+  socket.on("busLocation", (data) => {
+    console.log("Location Update:", data);
 
-    // Listen for updates from bus trackers (simulated in this example)
-    socket.on("updateLocation", ({ busId, latitude, longitude }) => {
-        console.log(`Location update for ${busId}: ${latitude}, ${longitude}`);
-
-        // Update the location in the server's memory
-        buses[busId] = { latitude, longitude };
-
-        // Broadcast the update to all clients
-        io.emit("locationUpdate", { busId, latitude, longitude });
-    });
-
-    socket.on("disconnect", () => {
-        console.log(`Client disconnected: ${socket.id}`);
-    });
+    // Validate the data before emitting
+    if (data.lat && data.lng) {
+      io.emit("busLocation", data);
+    } else {
+      console.error("Invalid bus location data:", data); // Log if data is invalid
+    }
+  });
 });
 
-server.listen(PORT,()=>{
-    MongoDBConnection()
-    console.log(`App is listening at ${PORT}`)
-})
+// Load routes
+app.use('/user',userRoutes);
+app.use('/driver',driverRoutes);
+app.use(express.urlencoded({ extended: true }));
+
+// Start the server
+const PORT = process.env.PORT || 3000; // Use environment variable for the port
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+  // Connect to the database
+  dbconnect();
+});
