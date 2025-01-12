@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function DriverLogin() {
     const Navigate = useNavigate()
@@ -40,6 +40,7 @@ function DriverLogin() {
           Welcome To Move Smart
         </h1>
         <p className="text-center my-4">Login Before start driving</p>
+        
         <form onSubmit={handleSubmit} className="flex w-[60%] mx-auto flex-col gap-4 my-10" action="">
           <TextField
             value={busno}
@@ -64,6 +65,10 @@ function DriverLogin() {
           >
             Login
           </Button>
+        <div className="flex items-center justify-start">
+        <p className="text-center my-4">Not Registered?</p>
+        <Link className="text-sm text-blue-500 underline" to={'/driverRegister'}>Register here</Link>
+        </div>
         </form>
       </div>
     </div>

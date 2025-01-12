@@ -10,6 +10,7 @@ import {
   BusTrackingMap,
   Driver,
   DriverLogin,
+  DriverRegister,
   User,
   UserLogin,
   UserRegister,
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path:"/admin",
     element:<Admin/>
+  },
+  {
+    path:'/driverRegister',
+    element:<DriverRegister/>
   }
 ]);
 
