@@ -11,6 +11,7 @@ import {
   Driver,
   DriverLogin,
   DriverRegister,
+  Issue,
   User,
   UserLogin,
   UserRegister,
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path:'/driverRegister',
     element:<DriverRegister/>
+  },
+  {
+    path:'/adminissue',
+    element:<Issue/>
   }
 ]);
 

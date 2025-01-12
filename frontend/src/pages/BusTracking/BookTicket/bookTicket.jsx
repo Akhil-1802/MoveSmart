@@ -84,11 +84,37 @@ export default function BookTicket() {
     }
   };
 
-  const handleFinalConfirmation = () => {
+  const handleFinalConfirmation = async () => {
     setOpenDialog(false);
     setOpenSnackbar(true);
     setActiveStep(2);
+  
+    // Send confirmation email to the user
+    const bookingDetails = {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      travelDate: formData.travelDate,
+      passengers: formData.passengers,
+      ageGroup: formData.ageGroup,
+      selectedBus: selectedBus,
+    };
+  
+    try {
+      await fetch('http://localhost:3000/sendConfirmationEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingDetails),
+      });
+      console.log('Confirmation email sent successfully');
+      handleCancelBooking();
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   };
+  
 
   const handleCancelBooking = () => {
     setSelectedBus(null);

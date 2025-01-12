@@ -16,7 +16,6 @@ const DriverLoginController = async function (req ,res) {
         const Driver = await DriverLoginModel.findOne({
             BusNumber
         })
-        console.log(Driver)
         if(!Driver)
             return res.status(400).json({error : "BusNumber or DriverID is Incorrect"})
 
