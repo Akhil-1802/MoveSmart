@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 function DriverLogin() {
     const Navigate = useNavigate()
   const [busno, setBusno] = useState("");
-  const [driverID, setDriverID] = useState("");
+  const [Password, setPassword] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!busno || !driverID) {
+    if (!busno || !Password) {
       alert("Please fill out both fields.");
       return;
     }
-    const response = await fetch (`http://localhost:3000/driver/login/${busno}/${driverID}`,{
+    const response = await fetch (`http://localhost:3000/driver/login/${busno}/${Password}`,{
       method:"POST",
       credentials:"include"
     })
@@ -51,11 +51,11 @@ function DriverLogin() {
             variant="outlined"
           />
           <TextField
-            value={driverID}
-            onChange={(e) => setDriverID(e.target.value)}
-            type="text"
+            value={Password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
             id="outlined-basic"
-            label="Driver ID"
+            label="Password"
             variant="outlined"
           />
           <Button

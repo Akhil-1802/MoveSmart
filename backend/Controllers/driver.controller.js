@@ -12,15 +12,15 @@ function generateRandomCode() {
   }
 const DriverLoginController = async function (req ,res) {
     try {
-        const {BusNumber , DriverID} = req.params
+        const {BusNumber , Password} = req.params
         const Driver = await DriverLoginModel.findOne({
             BusNumber
         })
         if(!Driver)
-            return res.status(400).json({error : "BusNumber or DriverID is Incorrect"})
+            return res.status(400).json({error : "BusNumber or Password is Incorrect"})
 
-        if(Driver.DriverID !== DriverID)
-            return res.status(400).json({error:"BusNumber or DriverID is Incorrect"})
+        if(Driver.Password !== Password)
+            return res.status(400).json({error:"BusNumber or Password is Incorrect"})
         
         
         // Generate JWT token
@@ -39,16 +39,15 @@ const DriverLoginController = async function (req ,res) {
 }
 const DriverRegisterController = async (req,res) =>{
     try {
-        const {Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat} = req.body;
+        const {Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat,Password} = req.body;
         const Bus = await DriverLoginModel.findOne({
             BusNumber
         })
-        if(BusNumber)
+        if(Bus)
             return res.status(400).json({error:"Bus Already Exists"})
 
-        if(Bus.PhoneNumber === PhoneNumber) return res.status(400).json({error:"Bus Already Exists"})
         const DriverID= generateRandomCode()
-        const Driver = await DriverLoginModel.create({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat,DriverID})
+        const Driver = await DriverLoginModel.create({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat,DriverID,Password})
         if(!Driver){
             return res.status(400).json({error:"Not able to register"})
         }

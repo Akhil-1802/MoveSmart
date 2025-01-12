@@ -33,7 +33,11 @@ const DriverLogin = new mongoose.Schema({
     DriverID:{
         type:String,
         required : true
-    }
+    },
+    Password:{
+        type:String,
+        required : true
+    },
 },{timestamps :true})
 
 const DriverLoginModel = mongoose.model('Driver',DriverLogin);

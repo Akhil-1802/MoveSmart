@@ -13,6 +13,7 @@ function DriverRegister() {
   const [departure , setdeparture] = useState('')
   const [seat, setseat] = useState("");
   const [PhoneNumber , setPhoneNumber] = useState('')
+  const [Password , setPassword] = useState('')
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || departure=="" || arrival=="" || seat=="") {
@@ -23,7 +24,7 @@ function DriverRegister() {
         method: 'POST',
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat})
+        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat,Password})
 
       })
     if (response.ok) {
@@ -44,7 +45,7 @@ function DriverRegister() {
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex w-[60%] mx-auto flex-col gap-4 my-8"
+          className="flex w-[60%] mx-auto flex-col gap-4 my-4"
           action=""
         >
           <div className="flex gap-4">
@@ -142,6 +143,14 @@ function DriverRegister() {
             label="No. of Seats"
             variant="outlined"
           />
+          <TextField
+              value={Password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+            />
           <Button
             type="submit"
             sx={{ paddingTop: "10px", marginTop: "20px" }}
@@ -149,8 +158,8 @@ function DriverRegister() {
           >
             Register
           </Button>
-          <div className="flex items-center justify-start">
-            <p className="text-center">Already Registered?</p>
+          <div className="flex items-center justify-start ">
+            <p className="">Already Registered?</p>
             <Link
               className="text-sm text-blue-500 underline"
               to={"/driverlogin"}
