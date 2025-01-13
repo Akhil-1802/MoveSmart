@@ -4,6 +4,6 @@ const {AdminLoginController,GetIssueController,CompleteIssueController,DeleteIss
 router.post('/register/',AdminRegisterController)
 router.post('/login/:Email/:Password',AdminLoginController)
 router.get('/getissues',GetIssueController)
-router.post('/completeissue/:id',CompleteIssueController)
+router.post('/completeissue/:id/:Email/:Name/:Issue/:BusNumber',CompleteIssueController)
 router.post('/deleteissue/:id',DeleteIssueController)
 module.exports = router

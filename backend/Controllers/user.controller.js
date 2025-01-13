@@ -32,7 +32,7 @@ const UserLoginController = async (req, res) => {
     });
     if (!User)
       return res.status(400).json({ error: "Email or Password is incorrect" });
-    const comparePassword = bcrypt.compare(User.Password, Password);
+    const comparePassword = await bcrypt.compare(Password, User.Password);
     if (!comparePassword)
       return res.status(400).json({ error: "Email or Password is incorrect" });
 

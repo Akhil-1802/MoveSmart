@@ -162,7 +162,7 @@ function DriverRegister() {
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
             <span
-              onClick={() => navigate('/adminlogin')}
+              onClick={() => Navigate('/driverlogin')}
               className="text-blue-500 cursor-pointer hover:text-teal-600"
             >
               Login
@@ -174,7 +174,7 @@ function DriverRegister() {
       <div className="min-h-screen w-[60%] ">
         <img
           className="cover h-[98%] mt-2 w-[98%] ml-2 rounded-lg"
-          src="/driverlogin.webp"
+          src="/driverRegister.jpeg"
           alt=""
         />
       </div>

@@ -7,7 +7,7 @@ import RouteInfo from '../components/RouteInfo'
 export default function Dashboard() {
   // Hardcoded driver and bus data (Updated for Indian bus service)
   const driverData = {
-    name: "Rajesh Kumar",
+    name: "Akash Yadav",
     id: "DRV123",
     busNumber: "MH12AB1234", // Typical Indian bus registration number
     route: "Pune - Mumbai Express",

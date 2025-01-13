@@ -30,8 +30,8 @@ function Issue() {
     }
   }
   // Handler for Resolved button
-  const handleResolved = async(id) => {
-    const response = await fetch(`http://localhost:3000/admin/completeissue/${id}`,{method:"POST"})
+  const handleResolved = async(issue) => {
+    const response = await fetch(`http://localhost:3000/admin/completeissue/${issue._id}/${issue.Email}/${issue.Name}/${issue.Issue}/${issue.BusNumber}`,{method:"POST"})
     if(response.ok){
         toast.success('Issue Resolved',{
             autoClose:2000,
@@ -86,7 +86,7 @@ function Issue() {
                 <Button
                   variant="success"
                   className="me-2"
-                  onClick={() => handleResolved(issue._id)}
+                  onClick={() => handleResolved(issue)}
                 >
                   Resolved
                 </Button>
