@@ -1,0 +1,79 @@
+/* Issue.css */
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: #007bff;
+}
+
+button {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+  border: none;
+  border-radius: 5px;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Hover Effect for Card */
+.issue-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.issue-card:hover {
+  transform: scale(1.05); /* Zooms in the card */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff !important; /* Change background to white on hover */
+}
+
+.issue-card:hover .card-title,
+.issue-card:hover .card-text {
+  color: white !important; /* Change text color to white */
+}
+
+.issue-card:hover .btn {
+  background-color: #007bff; /* Change button background color on hover */
+}
+
+/* Change font color and style on hover */
+.card-body {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.card-body:hover {
+  color: white !important;
+  background-color: #007bff !important;
+}
+
+/* Button hover effect for Mark as Resolved */
+button.resolve:hover {
+  background-color: #28a745; /* Green color for 'Mark as Resolved' */
+  transform: scale(0.95); /* Zoom-out effect */
+  opacity: 0.9;
+}
+
+/* Button hover effect for Mark as Not Resolved */
+button.not-resolved:hover {
+  background-color: #dc3545; /* Red color for 'Mark as Not Resolved' */
+  transform: scale(0.95); /* Zoom-out effect */
+  opacity: 0.9;
+}
+
+/* Add spacing between cards */
+.card {
+  margin-bottom: 1rem;
+}

@@ -3,8 +3,13 @@ import Header from '../components/Header'
 import ServiceToggle from '../components/ServiceToggle'
 import BusInfoUpdate from '../components/BusInfoUpdate'
 import RouteInfo from '../components/RouteInfo'
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 export default function Dashboard() {
+  const {busno} = useParams()
+  const [ driver , setdriver] = useState({})
+  const [updateData , setupdateData] = useState(false)
   // Hardcoded driver and bus data (Updated for Indian bus service)
   const driverData = {
     name: "Akash Yadav",
@@ -41,6 +46,21 @@ export default function Dashboard() {
     { name: "Thane", time: "10:00 AM" },
     { name: "Mumbai Dadar", time: "10:30 AM" }
   ]
+  const getDriverData = async( )=>{
+    try {
+      const response = await fetch(`http://localhost:3000/driver/getdriverdata/${busno}`)
+      if(response.ok){
+        const data = await response.json()
+        setdriver(data.Driver)
+        console.log(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDriverData()
+  },[updateData])
 
   return (
     <div>
@@ -51,17 +71,16 @@ export default function Dashboard() {
           <div>
             <div className="bg-white shadow-md rounded-lg p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4">Driver Information</h2>
-              <p><strong>Name:</strong> {driverData.name}</p>
-              <p><strong>Driver ID:</strong> {driverData.id}</p>
-              <p><strong>Bus Number:</strong> {driverData.busNumber}</p>
-              <p><strong>Route:</strong> {driverData.route}</p>
-              <p><strong>Next Stop:</strong> {driverData.nextStop}</p>
-              <p><strong>Estimated Arrival:</strong> {driverData.estimatedArrival}</p>
-              <p><strong>Shift:</strong> {driverData.shiftStart} - {driverData.shiftEnd}</p>
+              <p><strong>Name:</strong> {driver.Name}</p>
+              <p><strong>Driver ID:</strong> {driver.DriverID}</p>
+              <p><strong>Bus Number:</strong> {driver.BusNumber}</p>
+              <p><strong>Route:</strong> {driver.from} - {driver.to}</p>
+              <p><strong>Shift:</strong> {driver.shiftstart} {driver.shiftstart < `12:00` ? `AM`:`PM`} - {driver.shiftend} {driver.shiftend<`12:00`?`AM`:`PM`}</p>
+              <p><strong>Status:</strong> {driver.BusStatus}</p>
             </div>
             <ServiceToggle />
-            <BusInfoUpdate initialSeats={driverData.availableSeats} initialStatus={driverData.busStatus} />
-            <RouteInfo stops={routeStops} />
+            <BusInfoUpdate initialSeats={driver.seat} initialStatus={driver.BusStatus} driverID={driver.DriverID} setupdateData={setupdateData}/>
+            <RouteInfo stops={driver.Routes || []} DriverID={driver.DriverID}/>
           </div>
           <div>
             {/* <LocationSharing /> */}

@@ -21,6 +21,7 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import { ToastContainer } from "react-toastify";
 import { Userprovider } from "../context/userContext.jsx";
+import AddRoutes from "./components/AddRoutes.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
     element: <DriverLogin />,
   },
   {
-    path: "/driver",
+    path: "/driver/:busno",
     element: <Driver />,
   },
   {
@@ -84,7 +85,11 @@ const router = createBrowserRouter([
   },
   {
     path:'/adminissue',
-    element:<Issue/>
+    element:<Issue />
+  },
+  {
+    path:'/addroutes/:DriverID',
+    element:<AddRoutes />
   }
 ]);
 

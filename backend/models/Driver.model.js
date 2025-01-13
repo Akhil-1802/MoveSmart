@@ -22,7 +22,11 @@ const DriverLogin = new mongoose.Schema({
         type : String ,
         required :true
     },
-    departure : {
+    shiftstart : {
+        type : String ,
+        required :true
+    },
+    shiftend : {
         type : String ,
         required :true
     },
@@ -38,6 +42,15 @@ const DriverLogin = new mongoose.Schema({
         type:String,
         required : true
     },
+    BusStatus : {
+        type : String ,
+        default:"On Time"
+    },
+    Routes : {
+        type:Array,
+        default:[]
+    }
+
 },{timestamps :true})
 
 const DriverLoginModel = mongoose.model('Driver',DriverLogin);

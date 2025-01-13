@@ -73,9 +73,8 @@ const CompleteIssueController = async (req, res) => {
     };
     await transporter.sendMail(mailOptions);
 
-    res.send({ message: "Email sent successfully!" });
 
-    res.status(200).json({ message: "Updated Successfully" });
+    res.status(200).json({ message: "Email sent and Updated Successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -94,10 +93,12 @@ const DeleteIssueController = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 module.exports = {
   AdminLoginController,
   GetIssueController,
   CompleteIssueController,
   DeleteIssueController,
   AdminRegisterController,
+  
 };

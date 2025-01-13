@@ -8,7 +8,7 @@ import BookTicket from "./BusTracking/BookTicket/bookTicket";
 import AdminLogin from "./Admin/AdminLogin";
 import Admin from "./Admin/Dashboard";
 import DriverRegister from "./Driver/DriverRegister";
-import Issue from "./Admin/Issue";
+import Issue from "./Admin/Issue/Issue";
 import AdminRegister from "./Admin/AdminRegister";
 
 

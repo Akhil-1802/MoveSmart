@@ -9,14 +9,14 @@ function DriverRegister() {
   const [BusNumber, setBusNumber] = useState('')
   const [from , setfrom] = useState('')
   const [to , setto] = useState('')
-  const [arrival , setarrival] = useState('')
-  const [departure , setdeparture] = useState('')
+  const [shiftstart , setshiftstart] = useState('')
+  const [shiftend , setshiftend] = useState('')
   const [seat, setseat] = useState("");
   const [PhoneNumber , setPhoneNumber] = useState('')
   const [Password , setPassword] = useState('')
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || departure=="" || arrival=="" || seat=="") {
+    if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || shiftstart=="" || shiftend=="" || seat=="") {
       alert("Please fill out both fields.");
       return;
     }
@@ -24,7 +24,7 @@ function DriverRegister() {
         method: 'POST',
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , departure , arrival, seat,Password})
+        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , shiftstart , shiftend, seat,Password})
 
       })
     if (response.ok) {
@@ -103,15 +103,15 @@ function DriverRegister() {
           </div>
           <div className="flex justify-between">
           <div className="flex flex-col items-center ">
-                <h3>Departure</h3>
+                <h5>Start</h5>
             <TextField
             sx={
                 {
                     width:"130px"
                 }
             }
-              value={departure}
-              onChange={(e) => setdeparture(e.target.value)}
+              value={shiftstart}
+              onChange={(e) => setshiftstart(e.target.value)}
               type="time"
               id="outlined-basic"
               label=""
@@ -119,15 +119,15 @@ function DriverRegister() {
             />
             </div>
             <div className="flex flex-col items-center">
-                <h3>Arrival</h3>
+                <h5>End</h5>
             <TextField
             sx={
                 {
                     width:"130px"
                 }
             }
-              value={arrival}
-              onChange={(e) => setarrival(e.target.value)}
+              value={shiftend}
+              onChange={(e) => setshiftend(e.target.value)}
               type="time"
               id="outlined-basic"
               label=""

@@ -18,7 +18,7 @@ function DriverLogin() {
     })
     if(response.ok){
         const data = await response.json()
-        Navigate('/driver')
+        Navigate(`/driver/${busno}`)
         toast.success(' Driver Login ',{
           position : 'top-center',
           autoClose:2000
