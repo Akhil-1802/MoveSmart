@@ -2,13 +2,23 @@ const express = require('express')
 const transporter = require('../nodemail')
 const router = express.Router()
 
+function generateRandomCode() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      code += characters[randomIndex];
+    }
+    return code;
+  }
 
 router.post('/', async (req, res) => {
     const { fullName, email, phone, travelDate, passengers, ageGroup, selectedBus } = req.body;
     console.log(req.body);
     try {
+        const TicketID = generateRandomCode()
         const mailOptions = {
-            from: 'satendrakaushik2002@gmail.com',
+            from: 'akhilmaindola18@gmail.com',
             to: email,
             subject: 'Bus Ticket Booking Confirmation',
             text: `Hello ${fullName},
@@ -16,6 +26,7 @@ router.post('/', async (req, res) => {
             Your bus ticket booking has been confirmed!
 
             Bus: ${selectedBus.name}
+            TicketID : ${TicketID}
             From: ${selectedBus.from} To: ${selectedBus.to}
             Departure: ${selectedBus.departure}
             Travel Date: ${travelDate}

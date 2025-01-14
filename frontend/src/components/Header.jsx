@@ -1,11 +1,13 @@
 import { BusFront, Bell } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Header() {
+  const Navigate = useNavigate()
   return (
     <header className="bg-blue-600 text-white shadow-lg">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <BusFront className="h-8 w-8" />
+        <div onClick={() =>(Navigate('/'))} className="flex items-center space-x-2 cursor-pointer">
+          <BusFront  className="h-8 w-8" />
           <h1 className="text-2xl font-bold">Move Smart</h1>
         </div>
         <nav className="flex items-center">

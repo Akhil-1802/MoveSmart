@@ -64,7 +64,7 @@ const CompleteIssueController = async (req, res) => {
       }
     );
     const mailOptions = {
-      from: "satendrakaushik2002@gmail.com",
+      from: "akhilmaindola18@gmail.com",
       to: Email,
       subject: `Issue : ${issue} Resolved`,
       text: `Hello ${Name},

@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { userProfile } from "../../context/userContext.jsx";
@@ -9,51 +9,64 @@ function SOS({ setsos }) {
   const [Name, setName] = useState("");
   const [BusNumber, setBusNumber] = useState("");
   const [userEmail, setUserEmail] = useState(email);
+  const [loading, setloading] = useState(false);
   //FormSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = confirm("Are you really want to submit?");
-    if (result) {
-      const response = await fetch("http://localhost:3000/user/sos", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          Name: Name,
-          Email: userEmail,
-          BusNumber: BusNumber,
-          Issue: issue,
-        }),
-      });
-
-      if (response.ok) {
-        emailjs
-          .sendForm(
-            "service_fhmutqv",
-            "template_pzm2ltb", // Replace with your EmailJS Template ID
-            e.target, // The form element
-            "UZ4Qgp2GeS6aVrQnA" // Replace with your EmailJS User ID
-          )
-          .then(
-            (result) => {
-              console.log("Email sent: ", result.text);
-            },
-            (error) => {
-              console.log("Error: ", error.text);
-            }
-          );
-        toast.success("SOS Submitted", {
-          position: "top-center",
-          autoClose: 2000,
+    setloading(true)
+    try {
+      const result = confirm("Are you really want to submit?");
+      if (result) {
+        const response = await fetch("http://localhost:3000/user/sos", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            Name: Name,
+            Email: userEmail,
+            BusNumber: BusNumber,
+            Issue: issue,
+          }),
         });
-        setsos(false);
-        console.log(response);
+
+        if (response.ok) {
+          emailjs
+            .sendForm(
+              "service_fhmutqv",
+              "template_pzm2ltb", // Replace with your EmailJS Template ID
+              e.target, // The form element
+              "UZ4Qgp2GeS6aVrQnA" // Replace with your EmailJS User ID
+            )
+            .then(
+              (result) => {
+                console.log("Email sent: ", result.text);
+              },
+              (error) => {
+                console.log("Error: ", error.text);
+              }
+            );
+          toast.success("SOS Submitted", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          setsos(false);
+          console.log(response);
+        }
       }
+    } catch (error) {
+      setloading(false)
+    } finally {
+      setloading(false)
     }
   };
 
   return (
     <div className="w-[30vw] h-[70vh] bg-slate-100 rounded-sm">
+      {loading && (
+        <div className="inset-0 fixed backdrop-blur-sm z-20 flex items-center justify-center">
+          <CircularProgress />
+        </div>
+      )}
       <div className="bg-red-500 p-4 text-white flex justify-between items-center">
         <h1 className="text-xl font-semibold">Emergency!</h1>
         <span className="cursor-pointer" onClick={() => setsos(false)}>

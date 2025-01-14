@@ -6,7 +6,7 @@ import Dashboard from '../page'
 function Driver() {
   return (
     <div>
-<Dashboard/>
+      <Dashboard/>
     </div>
   )
 }
