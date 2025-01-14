@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import { io } from 'socket.io-client';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -94,6 +94,7 @@ const SearchInput = ({ onSearch }) => (
 // Main component
 const BusTrackingMap = () => {
   const [busLocations, setBusLocations] = useState({});
+  const [busPaths, setBusPaths] = useState({});
   const [selectedBus, setSelectedBus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
@@ -101,6 +102,7 @@ const BusTrackingMap = () => {
   const socket = useRef(null);
   const mapRef = useRef(null);
   const previousLocations = useRef({});
+  const markersRef = useRef({});
 
   useEffect(() => {
     socket.current = io('https://busserver-1.onrender.com');
@@ -165,6 +167,11 @@ const BusTrackingMap = () => {
       };
       return { ...prevLocations, [busId]: newLocation };
     });
+
+    setBusPaths((prevPaths) => {
+      const newPath = prevPaths[busId] ? [...prevPaths[busId], [lat, lng]] : [[lat, lng]];
+      return { ...prevPaths, [busId]: newPath };
+    });
   };
 
   const calculateDistance = (lat1, lng1, lat2, lng2) => {
@@ -183,26 +190,8 @@ const BusTrackingMap = () => {
     return distance;
   };
 
-  const MapUpdater = ({ busLocations, userLocation }) => {
+  const BusMarkers = ({ busLocations, busPaths }) => {
     const map = useMap();
-
-    useEffect(() => {
-      if (Object.keys(busLocations).length > 0) {
-        const bounds = L.latLngBounds(Object.values(busLocations).map(loc => [loc.lat, loc.lng]));
-        map.fitBounds(bounds, { padding: [50, 50] });
-      }
-    }, [map, busLocations]);
-
-    useEffect(() => {
-      if (userLocation) {
-        map.setView([userLocation.lat, userLocation.lng], 13);
-      }
-    }, [map, userLocation]);
-
-    return null;
-  };
-
-  const BusMarkers = ({ busLocations }) => {
     const busIcon = L.icon({
       iconUrl: 'https://cdn.iconscout.com/icon/free/png-512/free-bus-icon-download-in-svg-png-gif-file-formats--back-city-basic-icons-pack-industry-449853.png?f=webp&w=256',
       iconSize: [32, 32],
@@ -210,23 +199,23 @@ const BusTrackingMap = () => {
       popupAnchor: [0, -32]
     });
 
+    useEffect(() => {
+      Object.entries(busLocations).forEach(([busId, { lat, lng }]) => {
+        if (markersRef.current[busId]) {
+          markersRef.current[busId].setLatLng([lat, lng]);
+        } else {
+          const marker = L.marker([lat, lng], { icon: busIcon }).addTo(map);
+          marker.bindPopup(`<strong>Bus ${busId}</strong><br />Lat: ${lat.toFixed(4)}<br />Long: ${lng.toFixed(4)}`);
+          marker.on('click', () => setSelectedBus(busId));
+          markersRef.current[busId] = marker;
+        }
+      });
+    }, [busLocations, map, busIcon]);
+
     return (
       <>
-        {Object.entries(busLocations).map(([busId, { lat, lng }]) => (
-          <Marker
-            key={busId}
-            position={[lat, lng]}
-            icon={busIcon}
-            eventHandlers={{
-              click: () => setSelectedBus(busId),
-            }}
-          >
-            <Popup>
-              <strong>Bus {busId}</strong><br />
-              Lat: {lat.toFixed(4)}<br />
-              Long: {lng.toFixed(4)}
-            </Popup>
-          </Marker>
+        {Object.entries(busPaths).map(([busId, path]) => (
+          <Polyline key={busId} positions={path} color="blue" />
         ))}
       </>
     );
@@ -267,8 +256,7 @@ const BusTrackingMap = () => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  <MapUpdater busLocations={busLocations} userLocation={userLocation} />
-                  <BusMarkers busLocations={Object.fromEntries(filteredBuses)} />
+                  <BusMarkers busLocations={Object.fromEntries(filteredBuses)} busPaths={busPaths} />
                   {userLocation && (
                     <Marker position={[userLocation.lat, userLocation.lng]}>
                       <Popup>
@@ -354,4 +342,3 @@ const BusTrackingMap = () => {
 };
 
 export default BusTrackingMap;
-
