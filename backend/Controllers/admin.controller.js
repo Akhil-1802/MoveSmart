@@ -1,4 +1,5 @@
 const AdminModel = require("../models/Admin.model");
+const AdminDriverModel = require("../models/AdminDriver.model");
 const SOSmodel = require("../models/SOS.model");
 const transporter = require('../nodemail')
 
@@ -41,7 +42,10 @@ const AdminLoginController = async (req, res) => {
 };
 const GetIssueController = async (req, res) => {
   try {
-    const Issues = await SOSmodel.find({});
+    const { Email } = req.params
+    const Issues = await SOSmodel.find({
+      AdminEmail:Email
+    });
     if (!Issues)
       return res.status(400).json({ error: "Issues not find or no issues" });
 
@@ -93,12 +97,66 @@ const DeleteIssueController = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+const AdminDriverController = async (req,res) =>{
 
+  try {
+    const { Email} = req.params
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      licenseNumber,
+      experience,
+      busNumber
+    } = req.body
+    const FindDriver = await AdminDriverModel.findOne({
+      BusNumber:busNumber
+    })
+    if(FindDriver) return res.status(400).json({error : "Driver Already exists"})
+
+    const Driver = await AdminDriverModel.create({
+      FirstName :firstName,
+      LastName :lastName,
+      Email:email,
+      PhoneNumber:phone,
+      LicenseNumber:licenseNumber,
+      Experience:experience,
+      BusNumber:busNumber,
+      AdminEmail:Email
+    })
+    if(!Driver)
+      return res.status(400).json({error:"AdminDriver Not created"})
+    res.status(200).json({message : "AdminDriver Created",Driver})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+    
+  }
+}
+const GetAdminDriversController = async (req,res) =>{
+  try {
+    const { Email }= req.params
+    const Drivers = await AdminDriverModel.find({
+      AdminEmail : Email
+    },
+  {FirstName:1,LastName:1,Email:1,PhoneNumber:1,BusNumber:1})
+
+  res.status(200).json({message:"Drivers Found",Drivers})
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+    
+  }
+}
 module.exports = {
   AdminLoginController,
   GetIssueController,
   CompleteIssueController,
   DeleteIssueController,
   AdminRegisterController,
+  AdminDriverController,
+  GetAdminDriversController
   
 };

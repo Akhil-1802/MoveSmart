@@ -23,7 +23,7 @@ const AdminLogin = () => {
             credentials:"include"
         })
         if(response.ok){
-            Navigate('/admin')
+            Navigate(`/admin/${Email}`)
             toast.success("Admin Login",{
                 autoClose:2000,
                 position:"top-center"
@@ -80,12 +80,11 @@ const AdminLogin = () => {
         </form>
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Not registered?{' '}
+            Contact to be Admin!
             <span
-              onClick={() => Navigate('/adminregister')}
-              className="text-teal-500 cursor-pointer hover:text-teal-600"
+              className="text-teal-500 ml-4 cursor-pointer hover:text-teal-600"
             >
-              Register
+              movesmart@gmail.com
             </span>
           </p>
         </div>

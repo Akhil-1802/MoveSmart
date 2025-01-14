@@ -8,9 +8,10 @@ import {
 } from "recharts";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Dashboard = () => {
+  const {Email} = useParams()
   const Navigate = useNavigate()
   // Data for drivers leaderboard
   const topDrivers = [
@@ -46,13 +47,14 @@ const Dashboard = () => {
       <h2 className="mb-4">Admin Dashboard</h2>
       
       <div className=" flex items-center gap-10 mr-20">
-      <Button onClick={()=>(Navigate('/adminissue'))} sx={
+      <Button onClick={()=>(Navigate(`/adminissue/${Email}`))} sx={
         {
           border:'2px red solid',
           color:'red'
         }
       } variant="outlined">Issues</Button>
       <Button onClick={()=>(Navigate('/'))} variant="contained">Logout</Button>
+      <Button onClick={()=>(Navigate(`/admindriver/${Email}`))} variant="outlined">Drivers</Button>
       </div>
       </div>
 

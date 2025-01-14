@@ -53,6 +53,10 @@ const DriverLogin = new mongoose.Schema({
     Routes : {
         type:Array,
         default:[]
+    },
+    AdminEmail :{
+        type:String,
+        required:true
     }
 
 },{timestamps :true})

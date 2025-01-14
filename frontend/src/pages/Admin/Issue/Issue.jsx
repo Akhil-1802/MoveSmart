@@ -5,14 +5,16 @@ import { toast } from "react-toastify";
 import "./Issue.css"; // Import custom CSS file for additional styling
 import { Loader } from "lucide-react";
 import { CircularProgress } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 function Issue() {
+  const { Email } = useParams()
   const [issues, setIssues] = useState([]);
   const [ loading , setloading] = useState(false)
   // Fetch issues from the backend
   const getIssues = async () => {
     try {
-      const response = await fetch("http://localhost:3000/admin/getissues");
+      const response = await fetch(`http://localhost:3000/admin/getissues/${Email}`);
       if (response.ok) {
         const data = await response.json();
         setIssues(data.Issues);

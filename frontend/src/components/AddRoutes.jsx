@@ -37,7 +37,7 @@ export default function AddRoutesPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       {/* Header */}
       <header className="w-full bg-blue-500 text-white text-center py-4">
         <h1 className="text-2xl font-bold">Add Routes</h1>

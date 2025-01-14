@@ -1,3 +1,4 @@
+const AdminDriverModel = require("../models/AdminDriver.model");
 const DriverLoginModel = require("../models/Driver.model");
 const jwt = require("jsonwebtoken");
 function generateRandomCode() {
@@ -58,10 +59,11 @@ const DriverRegisterController = async (req, res) => {
       Password,
       Email
     } = req.body;
-    const Bus = await DriverLoginModel.findOne({
-      BusNumber,
-    });
-    if (Bus) return res.status(400).json({ error: "Bus Already Exists" });
+
+    const FindBus = await AdminDriverModel.findOne({
+      BusNumber
+    })
+    if (!FindBus) return res.status(400).json({ error: "Bus Not Already Exists" });
 
     const DriverID = generateRandomCode();
     const Driver = await DriverLoginModel.create({
@@ -76,7 +78,8 @@ const DriverRegisterController = async (req, res) => {
       seat,
       DriverID,
       Password,
-      Email
+      Email,
+      AdminEmail:FindBus.AdminEmail
     });
     if (!Driver) {
       return res.status(400).json({ error: "Not able to register" });

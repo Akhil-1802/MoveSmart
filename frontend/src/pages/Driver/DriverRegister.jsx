@@ -36,6 +36,12 @@ function DriverRegister() {
         autoClose: 2000,
       });
     }
+    else{
+      toast.error('Please verify your bus by Admin!',{
+        autoClose:2000,
+        position:"top-center"
+      })
+    }
     // Add further login logic here
   };
   return (

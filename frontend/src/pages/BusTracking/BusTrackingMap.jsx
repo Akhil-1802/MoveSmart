@@ -99,6 +99,7 @@ const BusTrackingMap = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [mapCenter, setMapCenter] = useState([28.6836, 77.3729]); // Default to (0, 0)
   const socket = useRef(null);
   const mapRef = useRef(null);
   const previousLocations = useRef({});
@@ -125,10 +126,12 @@ const BusTrackingMap = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
+          };
+          setUserLocation(location);
+          setMapCenter([location.lat, location.lng]); // Update map center when location is retrieved
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -226,7 +229,7 @@ const BusTrackingMap = () => {
   );
 
   return (
-    <div className="w-full h-screen flex flex-col bg-gray-100">
+    <div className="w-full min-h-screen flex flex-col bg-gray-100">
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Real-Time Bus Tracker</h1>
@@ -247,7 +250,7 @@ const BusTrackingMap = () => {
             <>
               <div className="w-2/3 h-[calc(100vh-10rem)] rounded-lg overflow-hidden shadow-lg">
                 <MapContainer
-                  center={userLocation || [0, 0]}
+                  center={mapCenter } // Dynamically update map center
                   zoom={13}
                   className="w-full h-full"
                   ref={mapRef}
@@ -269,7 +272,7 @@ const BusTrackingMap = () => {
                 </MapContainer>
               </div>
 
-              <div className="w-1/3 space-y-6">
+              <div className="w-1/3 space-y-6 ">
                 <Card>
                   <CardHeader>
                     <CardTitle>Bus Information</CardTitle>

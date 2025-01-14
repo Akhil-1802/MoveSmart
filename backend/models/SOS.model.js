@@ -22,6 +22,10 @@ const SOS = new mongoose.Schema({
         type:Boolean,
         default:false
 
+    },
+    AdminEmail : {
+        type: String,
+        required :true
     }
 },{timestamps :true})
 

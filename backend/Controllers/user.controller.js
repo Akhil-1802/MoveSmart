@@ -4,6 +4,7 @@ const UserModel = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const SOSmodel = require("../models/SOS.model");
+const DriverLoginModel = require("../models/Driver.model");
 const FeedbackController = async (req, res) => {
   try {
     const { BusNumber, Experience, DriverBehaviour, Helpful, Suggestions } =
@@ -82,11 +83,15 @@ const UserRegisterController = async function (req, res) {
 const SOSController = async (req , res) =>{
   try {
     const { Name , Email , BusNumber , Issue} = req.body
+    const Bus = await DriverLoginModel.findOne({
+      BusNumber
+    })
     const SOS = await SOSmodel.create({
       Name,
       BusNumber,
       Email,
-      Issue
+      Issue,
+      AdminEmail:Bus.AdminEmail
     })
     if(!SOS)
       return res.status(400).json({error : "SOS not created"})

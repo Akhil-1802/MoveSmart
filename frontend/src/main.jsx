@@ -22,6 +22,7 @@ import Footer from "./components/Footer.jsx";
 import { ToastContainer } from "react-toastify";
 import { Userprovider } from "../context/userContext.jsx";
 import AddRoutes from "./components/AddRoutes.jsx";
+import AdminPortal from "./pages/Admin/components_AdminPortal.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -71,20 +72,24 @@ const router = createBrowserRouter([
     path:"/adminlogin",
     element:<AdminLogin/>
   },
+  // {
+  //   path:"/adminregister",
+  //   element:<AdminRegister/>
+  // },
   {
-    path:"/adminregister",
-    element:<AdminRegister/>
+    path:"/admin/:Email",
+    element:<Admin/>
   },
   {
-    path:"/admin",
-    element:<Admin/>
+    path:'/admindriver/:Email',
+    element:<AdminPortal/>
   },
   {
     path:'/driverRegister',
     element:<DriverRegister/>
   },
   {
-    path:'/adminissue',
+    path:'/adminissue/:Email',
     element:<Issue />
   },
   {
