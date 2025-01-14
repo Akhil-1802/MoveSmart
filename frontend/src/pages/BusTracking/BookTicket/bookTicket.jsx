@@ -34,10 +34,10 @@ import {
 } from '@mui/icons-material';
 
 const busData = [
-  { id: 1, name: "Shatabdi Express", from: "Delhi", to: "Jaipur", departure: "06:00 AM", arrival: "10:00 AM", rating: 4.5, price: 450, seats: 25 },
-  { id: 2, name: "Rajdhani Travels", from: "Mumbai", to: "Pune", departure: "09:00 AM", arrival: "12:00 PM", rating: 4, price: 350, seats: 15 },
-  { id: 3, name: "Southern Express", from: "Chennai", to: "Bangalore", departure: "02:00 PM", arrival: "07:00 PM",  rating: 4,price: 500, seats: 30 },
-  { id: 4, name: "Golden Line", from: "Kolkata", to: "Ranchi", departure: "08:00 AM", arrival: "02:00 PM", rating: 3, price: 400, seats: 20 },
+  { id: 1, name: "Shatabdi Express", from: "Delhi", to: "Jaipur", departure: "06:00 AM", arrival: "10:00 AM", rating: 4.5, price: 450, seats: 25 ,email:"tgolu5547@gmail.com"},
+  { id: 2, name: "Rajdhani Travels", from: "Mumbai", to: "Pune", departure: "09:00 AM", arrival: "12:00 PM", rating: 4, price: 350, seats: 15,email:'parahunter24@gmail.com' },
+  { id: 3, name: "Southern Express", from: "Chennai", to: "Bangalore", departure: "02:00 PM", arrival: "07:00 PM",  rating: 4,price: 500, seats: 30,email:'parahunter24@gmail.com' },
+  { id: 4, name: "Golden Line", from: "Kolkata", to: "Ranchi", departure: "08:00 AM", arrival: "02:00 PM", rating: 3, price: 400, seats: 20,email:'parahunter24@gmail.com' },
 ];
 
 export default function BookTicket() {
@@ -101,6 +101,7 @@ export default function BookTicket() {
       passengers: formData.passengers,
       ageGroup: formData.ageGroup,
       selectedBus: selectedBus,
+      
     };
   
     try {

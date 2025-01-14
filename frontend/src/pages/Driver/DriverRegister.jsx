@@ -14,9 +14,10 @@ function DriverRegister() {
   const [seat, setseat] = useState("");
   const [PhoneNumber , setPhoneNumber] = useState('')
   const [Password , setPassword] = useState('')
+  const [Email , setEmail] = useState('')
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || shiftstart=="" || shiftend=="" || seat=="") {
+    if (Name=="" || BusName=="" || BusNumber=="" || PhoneNumber=="" || from=="" || to=="" || shiftstart=="" || shiftend=="" || seat=="" || Email == "") {
       alert("Please fill out both fields.");
       return;
     }
@@ -24,7 +25,7 @@ function DriverRegister() {
         method: 'POST',
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , shiftstart , shiftend, seat,Password})
+        body: JSON.stringify({Name , BusName , BusNumber , PhoneNumber , from , to , shiftstart , shiftend, seat,Password,Email})
 
       })
     if (response.ok) {
@@ -72,6 +73,14 @@ function DriverRegister() {
             type="text"
             id="outlined-basic"
             label="Bus Number"
+            variant="outlined"
+          />
+          <TextField
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="outlined-basic"
+            label="Email"
             variant="outlined"
           />
           <TextField

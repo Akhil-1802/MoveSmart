@@ -56,6 +56,7 @@ const DriverRegisterController = async (req, res) => {
       shiftend,
       seat,
       Password,
+      Email
     } = req.body;
     const Bus = await DriverLoginModel.findOne({
       BusNumber,
@@ -75,6 +76,7 @@ const DriverRegisterController = async (req, res) => {
       seat,
       DriverID,
       Password,
+      Email
     });
     if (!Driver) {
       return res.status(400).json({ error: "Not able to register" });

@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     console.log(req.body);
     try {
         const TicketID = generateRandomCode()
-        const mailOptions = {
+        const mailOptionsUser = {
             from: 'akhilmaindola18@gmail.com',
             to: email,
             subject: 'Bus Ticket Booking Confirmation',
@@ -36,7 +36,26 @@ router.post('/', async (req, res) => {
 
             Thank you for booking with us!`
         };
-        await transporter.sendMail(mailOptions);
+        const mailOptionsDriver = {
+            from: 'akhilmaindola18@gmail.com',
+            to: selectedBus.email,
+            subject: 'Bus Ticket Booking Confirmation',
+            text: `From Move Smart,
+            Bus Ticket has been confirmed!
+            Name : ${fullName}
+            Bus: ${selectedBus.name}
+            TicketID : ${TicketID}
+            From: ${selectedBus.from} To: ${selectedBus.to}
+            Departure: ${selectedBus.departure}
+            Travel Date: ${travelDate}
+            Passengers: ${passengers}
+            Age Group: ${ageGroup}
+            Total Price: ₹${selectedBus.price * passengers}
+
+            Make sure to provide the wonderful experience to the passengers.`
+        };
+        await transporter.sendMail(mailOptionsUser);
+        await transporter.sendMail(mailOptionsDriver);
 
         res.send({ message: 'Email sent successfully!' });
     } catch (error) {
