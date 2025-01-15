@@ -80,7 +80,7 @@ const Dashboard = () => {
           <Card>
             <Card.Body>
               <Card.Title>Amount Collected</Card.Title>
-              <h3>$15020</h3>
+              <h3>₹15020</h3>
             </Card.Body>
           </Card>
         </Col>

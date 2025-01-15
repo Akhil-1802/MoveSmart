@@ -73,14 +73,13 @@ router.post("/", async (req, res) => {
       .send({ error: "Failed to send email. Please try again later." });
   }
 });
-router.post("/send-email", async (req, res) => {
+router.post("/alert", async (req, res) => {
   try {
-    console.log(req.body);
-    const { Email } = req.body;
     const mailOptionsDriver = {
       from: "akhilmaindola18@gmail.com",
-      to: Email,
+      to: 'parahunter24@gmail.com',
       subject: `Bus is near you.`,
+      text:`It will arrive in next 5 minutes`
     };
     await transporter.sendMail(mailOptionsDriver);
     res.send('Mail sent')

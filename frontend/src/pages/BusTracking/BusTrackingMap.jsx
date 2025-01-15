@@ -16,6 +16,7 @@ import { Search } from "lucide-react";
 const calculateETA = (distance, speed) => {
   if (speed <= 0) return Infinity;
   return distance / speed;
+ 
 };
 
 const formatTime = (seconds) => {
@@ -109,11 +110,39 @@ const BusTrackingMap = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [mapCenter, setMapCenter] = useState([28.6836, 77.3729]); // Default to (0, 0)
+  const [mapCenter, setMapCenter] = useState([28.6836, 77.3729]); 
+  const [distanceToUser, setDistanceToUser] = useState(0);
   const socket = useRef(null);
   const mapRef = useRef(null);
   const previousLocations = useRef({});
   const markersRef = useRef({});
+
+  const [notificationSent, setNotificationSent] = useState(false);
+ // ...existing code...
+ useEffect(() => {
+  if (userLocation && Object.keys(busLocations).length > 0) {
+    // Calculate distances to all buses and find the closest one
+    const distances = Object.values(busLocations).map(bus => 
+      calculateDistance(
+        bus.lat,
+        bus.lng,
+        userLocation.lat,
+        userLocation.lng
+      )
+    );
+    const closestDistance = Math.min(...distances);
+    setDistanceToUser(closestDistance);
+
+    // Send notification when distance is less than 2000m
+    if (closestDistance < 2000 && !notificationSent) {
+      sendNotification();
+      setNotificationSent(true);
+    } else if (closestDistance >= 2000) {
+      setNotificationSent(false); // Reset notification state when distance increases
+    }
+  }
+}, [userLocation, busLocations, notificationSent]);
+// ...existing code...
 
   useEffect(() => {
     socket.current = io("https://busserver-1.onrender.com");
@@ -143,14 +172,13 @@ const BusTrackingMap = () => {
             lng: position.coords.longitude,
           };
           setUserLocation(location);
-          setMapCenter([location.lat, location.lng]); // Update map center when location is retrieved
+          setMapCenter([location.lat, location.lng]); 
         },
         (error) => {
           console.error("Error getting user location:", error);
         }
       );
     }
-
     return () => {
       if (socket.current) {
         socket.current.disconnect();
@@ -171,8 +199,8 @@ const BusTrackingMap = () => {
         lat,
         lng
       );
-      const timeDiff = (currentTime - previousLocation.timestamp) / 1000; // time difference in seconds
-      speed = (distance / timeDiff) * 3.6; // speed in km/h
+      const timeDiff = (currentTime - previousLocation.timestamp) / 1000;
+      speed = (distance / timeDiff) * 3.6;
     }
 
     previousLocations.current[busId] = { lat, lng, timestamp: currentTime };
@@ -187,19 +215,6 @@ const BusTrackingMap = () => {
       };
       return { ...prevLocations, [busId]: newLocation };
     });
-    // Calculate distance from user location
-    if (userLocation) {
-      const distanceToUser = calculateDistance(
-        lat,
-        lng,
-        userLocation.lat,
-        userLocation.lng
-      );
-      if (distanceToUser < 2000) {
-        // 2 km = 2000 meters
-        sendNotification(); // Send notification when within 2 km
-      }
-    }
 
     setBusPaths((prevPaths) => {
       const newPath = prevPaths[busId]
@@ -220,22 +235,20 @@ const BusTrackingMap = () => {
       Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
       Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
+    // console.log("Distance:", R * c);
     const distance = R * c; // in metres
     return distance;
   };
+
   // Send email notification when within 2 km of the bus
   const sendNotification = async () => {
     try {
-      console.log('h1')
-      const response = await fetch("http://localhost:3000/send-email", {
+      console.log("Sending email notification...");
+      const response = await fetch("http://localhost:3000/sendConfirmationEmail/alert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          Email: "parahunter24@gmail.com", // User's email
-        }),
       });
 
       if (response.ok) {
@@ -285,7 +298,7 @@ const BusTrackingMap = () => {
   const filteredBuses = Object.entries(busLocations).filter(([busId]) =>
     busId.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  console.log("THis is the user Distance>>",distanceToUser)
   return (
     <div className="w-full min-h-screen flex flex-col bg-gray-100">
       <header className="bg-white border-b border-gray-200 px-6 py-4">
