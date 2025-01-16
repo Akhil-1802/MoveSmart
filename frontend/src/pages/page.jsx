@@ -78,7 +78,7 @@ export default function Dashboard() {
               <p><strong>Shift:</strong> {driver.shiftstart} {driver.shiftstart < `12:00` ? `AM`:`PM`} - {driver.shiftend} {driver.shiftend<`12:00`?`AM`:`PM`}</p>
               <p><strong>Status:</strong> {driver.BusStatus}</p>
             </div>
-            <ServiceToggle />
+            <ServiceToggle driver ={driver} />
             <BusInfoUpdate initialSeats={driver.seat} initialStatus={driver.BusStatus} driverID={driver.DriverID} setupdateData={setupdateData}/>
             <RouteInfo stops={driver.Routes || []} DriverID={driver.DriverID}/>
           </div>

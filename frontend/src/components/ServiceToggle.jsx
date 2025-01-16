@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ToggleLeft, ToggleRight } from 'lucide-react';
 import io from 'socket.io-client';
 
-export default function ServiceToggle() {
+export default function ServiceToggle({driver}) {
   const [isOnService, setIsOnService] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   const [socket, setSocket] = useState(null);
@@ -10,7 +10,7 @@ export default function ServiceToggle() {
 
   useEffect(() => {
   
-    const newSocket = io('https://busserver-1.onrender.com');
+    const newSocket = io('http://localhost:3000');
     setSocket(newSocket);
 
   
@@ -23,11 +23,12 @@ export default function ServiceToggle() {
     if (navigator.geolocation && socket) {
       const id = navigator.geolocation.watchPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
-          socket.emit('locationUpdate', {
-            busId: 'Bus_001', // Replace with unique bus ID
-            latitude,
-            longitude,
+          const { latitude : lat, longitude : lng } = position.coords;
+          socket.emit('busLocation', {
+            driver,
+            BusNumber: driver.BusNumber, // Replace with unique bus ID
+            lat,
+            lng,
           });
         },
         (error) => {

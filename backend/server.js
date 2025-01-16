@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
   socket.on("busLocation", (data) => {
     console.log("Location Update:", data);
     if (data.lat && data.lng) {
-      io.emit("busLocation", data);
+      io.emit("locationUpdate", data);
     } else {
       console.error("Invalid bus location data:", data);
     }

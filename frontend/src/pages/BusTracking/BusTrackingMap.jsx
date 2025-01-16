@@ -96,7 +96,7 @@ const SearchInput = ({ onSearch }) => (
       type="text"
       placeholder="Search buses..."
       className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      onChange={(e) => onSearch(e.target.value)}
+      onChange={(e) =>( onSearch(e.target.value))}
     />
     <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
   </div>
@@ -145,7 +145,7 @@ const BusTrackingMap = () => {
 // ...existing code...
 
   useEffect(() => {
-    socket.current = io("https://busserver-1.onrender.com");
+    socket.current = io("http://localhost:3000");
 
     socket.current.on("connect", () => {
       console.log("Socket.IO Connected");
@@ -153,8 +153,8 @@ const BusTrackingMap = () => {
     });
 
     socket.current.on("locationUpdate", (data) => {
-      const { busId, latitude, longitude, passengers, nextStop } = data;
-      updateBusInfo(busId, latitude, longitude, passengers, nextStop);
+      const { BusNumber,lat: latitude, lng:longitude, passengers, nextStop,driver } = data;
+      updateBusInfo(BusNumber, latitude, longitude, passengers, nextStop,driver);
     });
 
     socket.current.on("connect_error", (error) => {
@@ -187,7 +187,7 @@ const BusTrackingMap = () => {
     };
   }, []);
 
-  const updateBusInfo = (busId, lat, lng, passengers, nextStop) => {
+  const updateBusInfo = (busId, lat, lng, passengers, nextStop,driver) => {
     const currentTime = Date.now();
     const previousLocation = previousLocations.current[busId];
 
@@ -210,8 +210,10 @@ const BusTrackingMap = () => {
         lat,
         lng,
         speed,
-        passengers: passengers || 0,
+        passengers: driver.seat || 0,
         nextStop: nextStop || "Unknown",
+        from : driver.from,
+        to : driver.to
       };
       return { ...prevLocations, [busId]: newLocation };
     });
@@ -323,7 +325,7 @@ const BusTrackingMap = () => {
             </div>
           ) : (
             <>
-              <div className="w-2/3 h-[calc(100vh-10rem)] rounded-lg overflow-hidden shadow-lg">
+              <div className="w-2/3 h-[calc(100vh-8rem)] rounded-lg overflow-hidden shadow-lg">
                 <MapContainer
                   center={mapCenter} // Dynamically update map center
                   zoom={13}
@@ -380,6 +382,12 @@ const BusTrackingMap = () => {
                             <p className="text-sm text-gray-500">Next Stop</p>
                             <p className="font-medium">
                               {busLocations[selectedBus].nextStop}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">Route</p>
+                            <p className="font-medium">
+                              {busLocations[selectedBus].from} - {busLocations[selectedBus].to}
                             </p>
                           </div>
                           <div>
